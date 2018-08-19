@@ -6,7 +6,8 @@ from django.urls import reverse
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super(PublishedManager,
-                     self).get_queryset() .filter(status='published')
+                     self).get_queryset() \
+                      .filter(status='published')
 
 
 class Post(models.Model):
@@ -30,15 +31,17 @@ class Post(models.Model):
     objects = models.Manager() #The default manager.
     published = PublishedManager() # Our custom manager.
 
-    def get_absolute_url(self):
-        return reverse('blog:post_detail',
-                        args=[self.publish.year,
-                              self.publish.month,
-                              self.publish.day,
-                              self.slug])
+
 
     class Meta:
         ordering = ('-publish',)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:post_detail',
+                        args=[self.publish.year,
+                              self.publish.month,
+                              self.publish.day,
+                              self.slug])
